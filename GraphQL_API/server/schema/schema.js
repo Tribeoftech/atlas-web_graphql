@@ -65,6 +65,10 @@ const RootQuery = new GraphQLObjectType({
         return Task.findById(args.id);
       },
     },
+    /**
+     * Resolves the project field on the Task type.
+     * Looks up the Project by ID and returns it.
+     */
     project: {
       type: ProjectType,
       args: { id: { type: GraphQLID } },
