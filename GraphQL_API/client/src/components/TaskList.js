@@ -1,26 +1,44 @@
-import {
-  useState,
-  //useEffect
-} from "react";
-// components
-import TaskDetails from './TaskDetails';
+/**
+ * TaskList component fetches and displays a list of tasks.
+ * Uses Apollo Client and GraphQL to retrieve tasks from backend.
+ * Allows selecting a task by ID to perform actions on specific tasks.
+ */
+import gql from "apollo-boost";
+import React, { useState } from "react";
+import { graphql } from "react-apollo";
+
+const getTasksQuery = gql`
+  {
+    tasks {
+      id
+      title
+    }
+  }
+`;
 
 function TaskList(props) {
-  const [state, setState] = useState({
-    selected: null
-  });
+  console.log(props);
+  const [setSelected] = useState(null);
 
-  return ( <
-    div >
-    <
-    ul id = "task-list" > {
+  function displayTasks() {
+    const data = props.data;
 
-    } <
-    /ul>  <
-    TaskDetails /
-    > < /
-    div >
+    if (data.loading) {
+      return <div>Loading tasks...</div>;
+    } else {
+      return data.tasks.map((task) => (
+        <li key={task.id} onClick={() => setSelected(task.id)}>
+          {task.title}
+        </li>
+      ));
+    }
+  }
+
+  return (
+    <div>
+      <ul id="task-list">{displayTasks()}</ul>
+    </div>
   );
 }
 
-export default TaskList;
+export default graphql(getTasksQuery)(TaskList);
