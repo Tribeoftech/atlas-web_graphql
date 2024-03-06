@@ -82,6 +82,10 @@ const RootQuery = new GraphQLObjectType({
         return Task.find({});
       },
     },
+    /**
+     * Resolves the projects field on the RootQuery type.
+     * Returns all Project documents.
+     */
     projects: {
       type: new GraphQLList(ProjectType),
       resolve(parent, args) {
