@@ -25,7 +25,7 @@
     "lodash": "^4.17.21",
     "mime-types": "^2.1.27",
     "mongodb": "^3.5.9",
-    "mongoose": "^8.2.0",
+    "mongoose": "^5.11.19",
     "react-apollo": "^3.1.5",
     "redis": "^4.6.13",
     "sha1": "^1.1.1",
