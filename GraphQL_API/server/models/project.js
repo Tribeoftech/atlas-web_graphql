@@ -1,12 +1,23 @@
-const mongoose = require('mongoose');
+/**
+ * Defines the Project schema for MongoDB.
+ *
+ * The projectSchema represents a project entity with fields:
+ * - title: The name of the project (String)
+ * - weight: The priority of the project (Number)
+ * - description: A description of the project (String)
+ * - projectId: The ID of the project (String)
+ */
+// task 6 - setting up the task model
 
+// import mongoose from 'mongoose';
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
-// create schema for project model
-const projectSchema = mongoose.Schema({
-	title: String,
-	weight: Number,
-	description: String,
+const projectSchema = new Schema({
+  title: String,
+  weight: Number,
+  description: String,
+  projectId: String,
 });
 
-// export based on projectSchema
-module.exports = mongoose.model('Project', projectSchema);
+module.exports = mongoose.model("Project", projectSchema);

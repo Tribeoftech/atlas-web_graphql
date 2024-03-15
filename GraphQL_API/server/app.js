@@ -5,6 +5,8 @@
  * Enables CORS.
  * Listens on port 4000.
  */
+
+// Importing the express module
 const express = require('express');
 // Importing the express-graphql middleware
 const {graphqlHTTP} = require('express-graphql');

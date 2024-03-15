@@ -1,11 +1,14 @@
 /**
- * Defines a GraphQLObjectType for Tasks with the following fields:
- * - id: The id of the task
- * - title: The title of the task
- * - weight: The weight or priority of the task
- * - description: A description of the task
- * - project: The Project object this Task belongs to, resolved by finding the Project by the task's projectId
+ * Defines GraphQL schema and resolvers for a Task and Project model.
+ *
+ * Exports a GraphQLSchema with a RootQueryType for querying tasks and
+ * projects, and a Mutation type for adding new tasks and projects.
+ *
+ * The TaskType and ProjectType define the structure of task and project
+ * objects, including relations between them for resolving linked records.
  */
+// Setting up Schema for GraphQL
+
 const {
   GraphQLObjectType,
   GraphQLString,
@@ -16,9 +19,14 @@ const {
   GraphQLNonNull,
 } = require("graphql");
 
+// Not needed anymore
+// const _ = require('lodash');
+
+//Task 7 - Setting up the schema for the task and project
 const Project = require("../models/project");
 const Task = require("../models/task");
-Type;
+
+// Define the TaskType
 const TaskType = new GraphQLObjectType({
   name: "Task",
   fields: () => ({
@@ -35,10 +43,7 @@ const TaskType = new GraphQLObjectType({
   }),
 });
 
-/**
- * Defines GraphQLObjectTypes for the Project and Task models, including their fields and resolvers.
- * Also defines the root Query fields for fetching Projects, Tasks, etc.
- */
+// Define the ProjectType
 const ProjectType = new GraphQLObjectType({
   name: "Project",
   fields: () => ({
@@ -55,6 +60,7 @@ const ProjectType = new GraphQLObjectType({
   }),
 });
 
+// Define the RootQuery for the TaskType
 const RootQuery = new GraphQLObjectType({
   name: "RootQueryType",
   fields: {
@@ -62,44 +68,36 @@ const RootQuery = new GraphQLObjectType({
       type: TaskType,
       args: { id: { type: GraphQLID } },
       resolve(parent, args) {
+        // Fetching a task from the database using Mongoose query
         return Task.findById(args.id);
       },
     },
-    /**
-     * Resolves the project field on the Task type.
-     * Looks up the Project by ID and returns it.
-     */
     project: {
       type: ProjectType,
       args: { id: { type: GraphQLID } },
       resolve(parent, args) {
+        // Fetching a project from the database using Mongoose query
         return Project.findById(args.id);
       },
     },
     tasks: {
       type: new GraphQLList(TaskType),
       resolve(parent, args) {
+        // Fetching all tasks from the database
         return Task.find({});
       },
     },
-    /**
-     * Resolves the projects field on the RootQuery type.
-     * Returns all Project documents.
-     */
     projects: {
       type: new GraphQLList(ProjectType),
       resolve(parent, args) {
+        // Fetching all projects from the database
         return Project.find({});
       },
     },
   },
 });
 
-/**
- * Defines the mutation fields for the GraphQL schema.
- * Includes addProject and addTask mutations to create new projects and tasks.
- * The mutations accept arguments for the project/task fields and return the saved project/task.
- */
+// Define the Mutation for the TaskType
 const Mutation = new GraphQLObjectType({
   name: "Mutation",
   fields: {
